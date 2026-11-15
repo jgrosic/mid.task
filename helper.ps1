@@ -7,4 +7,9 @@ Clear-Host
 git init
 
 dotnet clean
+
 dotnet build
+
+dotnet run --project .\AbySalto.Mid\AbySalto.Mid.WebApi.csproj
+
+start http://localhost:5269/index.html # see Swagger definitions
