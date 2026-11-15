@@ -6,3 +6,5 @@ return 0; # prevents executing this script as a whole
 Clear-Host
 git init
 
+dotnet clean
+dotnet build

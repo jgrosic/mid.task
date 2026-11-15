@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <SharedTargetFramework Condition="'$(SharedTargetFramework)' == ''">net9.0</SharedTargetFramework>
+    <TargetFramework>$(SharedTargetFramework)</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+</Project>

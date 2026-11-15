@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.13.12409.143 insiders
+VisualStudioVersion = 18.13.12409.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbySalto.Mid.WebApi", "AbySalto.Mid\AbySalto.Mid.WebApi.csproj", "{581350E7-81CD-4117-8ABF-DFA0EC03AEE1}"
 EndProject
@@ -16,6 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{49910200-2
 		helper.ps1 = helper.ps1
 		README.md = README.md
 		task.md = task.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{E3D98BDE-9F1C-494B-9DBE-8B23D968DACB}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Global
