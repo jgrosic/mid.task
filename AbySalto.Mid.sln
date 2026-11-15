@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113
+# Visual Studio Version 18
+VisualStudioVersion = 18.13.12409.143 insiders
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbySalto.Mid.WebApi", "AbySalto.Mid\AbySalto.Mid.WebApi.csproj", "{581350E7-81CD-4117-8ABF-DFA0EC03AEE1}"
 EndProject
@@ -10,6 +10,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbySalto.Mid.Domain", "AbySalto.Mid.Domain\AbySalto.Mid.Domain.csproj", "{E27AEF89-94C3-438C-8489-21B2D9A39E99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AbySalto.Mid.Application", "AbySalto.Mid.Application\AbySalto.Mid.Application.csproj", "{8A1A6302-33F1-4B75-A828-8BABBC2CA429}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{49910200-2FD6-4979-843A-79FE2F951A6A}"
+	ProjectSection(SolutionItems) = preProject
+		helper.ps1 = helper.ps1
+		README.md = README.md
+		task.md = task.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +43,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E5B6288F-11E6-4B7B-B3E4-48EC7E384002}
 	EndGlobalSection
 EndGlobal
