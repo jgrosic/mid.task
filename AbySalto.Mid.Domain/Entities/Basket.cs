@@ -23,7 +23,6 @@
         public Guid UserId { get; private set; }
         public IReadOnlyCollection<BasketItem> Items => _items.AsReadOnly();
 
-
         public void AddItem(
             int productId,
             string title,
