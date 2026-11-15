@@ -15,9 +15,6 @@ namespace AbySalto.Mid
                 .AddApplication()
                 .AddInfrastructure(builder.Configuration);
 
-            builder.Services.AddControllers();
-            builder.Services.AddOpenApi();
-
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
