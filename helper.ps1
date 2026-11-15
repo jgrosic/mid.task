@@ -31,4 +31,10 @@ dotnet new TUnit --name TempTests
 
 
 # -----
+ # run all tests
 dotnet test
+
+# run only unit tests
+dotnet run  --project AbySalto.Mid.Tests -- --treenode-filter "/*/AbySalto.Mid.Tests.Unit/*/*"
+dotnet test --project AbySalto.Mid.Tests -- --treenode-filter "/*/AbySalto.Mid.Tests.Unit/*/*"
+dotnet test --treenode-filter "/*/AbySalto.Mid.Tests.Unit/*/*"
