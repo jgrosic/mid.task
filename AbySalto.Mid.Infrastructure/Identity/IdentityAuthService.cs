@@ -23,7 +23,7 @@ public sealed class IdentityAuthService(UserManager<ApplicationUser> userManager
 
         IdentityResult result = await userManager.CreateAsync(user, request.Password);
 
-        if (result!.Succeeded)
+        if (!result.Succeeded)
         {
             var errors = result.Errors.Select(x => x.Description).ToArray();
 
