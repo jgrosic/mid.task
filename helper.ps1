@@ -14,6 +14,8 @@ dotnet clean
 
 dotnet build
 
+dotnet clean; dotnet build --no-incremental
+
 # -----------------------------------------------
 dotnet run --project .\AbySalto.Mid\AbySalto.Mid.WebApi.csproj
 
@@ -75,3 +77,11 @@ dotnet new tool-manifest
 # install correct version of EF locally
 dotnet tool install dotnet-ef --version 9.0.23
 
+# -----------------------------------------------
+# EF Database update
+# -----------------------------------------------
+dotnet ef database --help
+
+dotnet ef database drop     --project AbySalto.Mid.Infrastructure --startup-project AbySalto.Mid -- --environment Development
+
+dotnet ef database update   --project AbySalto.Mid.Infrastructure --startup-project AbySalto.Mid -- --environment Development
