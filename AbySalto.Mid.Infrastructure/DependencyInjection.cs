@@ -1,4 +1,5 @@
-﻿using AbySalto.Mid.Infrastructure.Identity;
+﻿using AbySalto.Mid.Application.Auth;
+using AbySalto.Mid.Infrastructure.Identity;
 using AbySalto.Mid.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +10,17 @@ namespace AbySalto.Mid.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
+            IConfiguration configuration)
         {
-            return services.AddDatabase(configuration);
+            return services
+                .AddDatabase(configuration)
+                .AddServices();
         }
 
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
-            return services;
+            return services.AddScoped<IAuthService, IdentityAuthService>();
         }
 
         private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
