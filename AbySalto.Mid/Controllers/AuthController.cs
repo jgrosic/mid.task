@@ -11,6 +11,8 @@ namespace AbySalto.Mid.WebApi.Controllers;
 public sealed class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
+    [ProducesResponseType<UserDto>(StatusCodes.Status201Created)]
+    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Register(
         RegisterRequest request,
         CancellationToken cancellationToken)
