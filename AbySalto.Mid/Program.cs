@@ -1,6 +1,7 @@
 
 using AbySalto.Mid.Application;
 using AbySalto.Mid.Infrastructure;
+using AbySalto.Mid.Infrastructure.Identity;
 
 namespace AbySalto.Mid
 {
@@ -30,10 +31,13 @@ namespace AbySalto.Mid
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
-
             app.MapControllers();
+            
+            app.MapGroup("/api/auth")
+                .MapIdentityApi<ApplicationUser>();
 
             app.Run();
         }

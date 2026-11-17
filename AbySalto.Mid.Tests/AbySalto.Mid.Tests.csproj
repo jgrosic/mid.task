@@ -11,17 +11,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="TUnit" Version="1.8*" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.23" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="9.0.23" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.23" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.23" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.23" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.23" />
-		<PackageReference Include="TUnit" Version="1.8*" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.23" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\AbySalto.Mid.Infrastructure\AbySalto.Mid.Infrastructure.csproj" />
+		<ProjectReference Include="..\AbySalto.Mid\AbySalto.Mid.WebApi.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using AbySalto.Mid.Application.Auth;
 using AbySalto.Mid.Infrastructure.Identity;
 using AbySalto.Mid.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,7 @@ namespace AbySalto.Mid.Infrastructure
         {
             return services
                 .AddDatabase(configuration)
+                .AddIdentity()
                 .AddServices();
         }
 
@@ -30,14 +32,29 @@ namespace AbySalto.Mid.Infrastructure
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connString));
 
+            return services;
+        }
+
+        private static IServiceCollection AddIdentity(this IServiceCollection services)
+        {
+            // AddIdentityApiEndpoints already adds AddIdentityCore
+
             services
-                .AddIdentityCore<ApplicationUser>(options =>
+                .AddIdentityApiEndpoints<ApplicationUser>(options =>
                 {
                     options.User.RequireUniqueEmail = true;
                     options.Password.RequiredLength = 8;
                 })
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddSignInManager();
+                .AddEntityFrameworkStores<AppDbContext>();
+
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    options.Events.OnRedirectToLogin = context =>
+            //    {
+            //        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            //        return Task.CompletedTask;
+            //    };
+            //});
 
             return services;
         }

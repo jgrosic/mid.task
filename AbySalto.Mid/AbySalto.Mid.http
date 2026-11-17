@@ -1,6 +1,41 @@
-@AbySalto.Mid_HostAddress = http://localhost:5269
+@AbySalto.Mid_HostAddress = https://localhost:7221
+@email = test@example.com
+@password = Password123!
 
-GET {{AbySalto.Mid_HostAddress}}/weatherforecast/
+### 1. registration — expect 200 OK (first time)
+POST {{AbySalto.Mid_HostAddress}}/api/auth/register
+Content-Type: application/json
 Accept: application/json
 
-###
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### 1.1 user info before logging in — expect 401 unauthorized
+GET {{AbySalto.Mid_HostAddress}}/api/auth/manage/info
+Accept: application/json
+
+### 2. log in using cookie auth — expect 200 and Set-Cookie in headers
+POST {{AbySalto.Mid_HostAddress}}/api/auth/login?useCookies=true
+Content-Type: application/json
+Accept: application/json
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+### 3. current user info — expect 200 with email (Visual Studio uses it's cookie jar)
+GET {{AbySalto.Mid_HostAddress}}/api/auth/manage/info
+Accept: application/json
+# Cookie: {{authCookie}}
+
+### 4. incorrect password — expect 401
+POST {{AbySalto.Mid_HostAddress}}/api/auth/login?useCookies=true
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "{{email}}",
+  "password": "WrongPassword123!"
+}

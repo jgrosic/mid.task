@@ -51,6 +51,9 @@ dotnet run  --project AbySalto.Mid.Tests -- --treenode-filter "/*/AbySalto.Mid.T
 dotnet test --project AbySalto.Mid.Tests -- --treenode-filter "/*/AbySalto.Mid.Tests.Unit/*/*"
 dotnet test --treenode-filter "/*/AbySalto.Mid.Tests.Unit/*/*"
 
+# run only api tests
+dotnet test --treenode-filter "/*/AbySalto.Mid.Tests.Api/*/*"
+
 # -----------------------------------------------
 # EF Migrations
 # -----------------------------------------------
@@ -90,3 +93,34 @@ dotnet ef database --help
 dotnet ef database drop     --project AbySalto.Mid.Infrastructure --startup-project AbySalto.Mid -- --environment Development
 
 dotnet ef database update   --project AbySalto.Mid.Infrastructure --startup-project AbySalto.Mid -- --environment Development
+
+# -----------------------------------------------
+# test logging in using cookies
+# -----------------------------------------------
+dotnet dev-certs https --trust
+
+dotnet run --project AbySalto.Mid --launch-profile https
+
+$base = "https://localhost:7221"
+
+$credentials = @{
+    email = "test@example.com"
+    password = "Password123!"
+} | ConvertTo-Json
+
+$session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+
+# registration, saves the cookie into the session
+Invoke-RestMethod "$base/api/auth/login?useCookies=true" `
+    -Method Post `
+    -ContentType "application/json" `
+    -Body $credentials `
+    -WebSession $session
+
+$session | ConvertTo-Json
+
+# get user info (uses session cookie) - expect
+Invoke-RestMethod "$base/api/auth/manage/info" -WebSession $session
+
+# try to get the info without the authenticated cookie - expect 401 Unauthorized
+Invoke-RestMethod "$base/api/auth/manage/info" -WebSession $session

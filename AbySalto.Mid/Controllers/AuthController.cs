@@ -5,23 +5,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AbySalto.Mid.WebApi.Controllers;
 
-[ApiController]
-[AllowAnonymous]
-[Route("api/auth")]
+//[ApiController]
+//[AllowAnonymous]
+//[Route("api/auth")]
+[Obsolete("We are using AddIdentityApiEndpoints for built-in registration route")]
 public sealed class AuthController(IAuthService authService) : ControllerBase
 {
-    [HttpPost("register")]
-    [ProducesResponseType<UserDto>(StatusCodes.Status201Created)]
-    [ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
+    //[HttpPost("register")]
+    //[ProducesResponseType<UserDto>(StatusCodes.Status201Created)]
+    //[ProducesResponseType<ValidationProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> Register(
         RegisterRequest request,
         CancellationToken cancellationToken)
     {
         var result = await authService.RegisterAsync(request, cancellationToken);
 
-        if (result.Succeeded) 
+        if (result.Succeeded)
             return StatusCode(StatusCodes.Status201Created, result.User);
-        
+
         ModelState.AddModelError("Registration", string.Join(" ", result.Errors));
 
         return ValidationProblem(ModelState);
