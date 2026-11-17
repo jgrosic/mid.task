@@ -13,6 +13,9 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     {
         base.OnModelCreating(builder);
 
+        // TODO: if there are many entities, consider using IEntityTypeConfiguration<TEntity> 
+        // https://learn.microsoft.com/en-us/ef/core/modeling/#grouping-configuration
+
         // ----------------------------------------------------------------------------------------
         builder.Entity<Basket>(entity =>
         {

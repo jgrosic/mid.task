@@ -1,7 +1,12 @@
-return 0; # prevents executing this script as a whole
+<#
+-------------------------
+Helpful terminal commands
+-------------------------
+To quickly execute some command: in vscode use "Terminal: Run Selected Text In Active Terminal"
+(@command:workbench.action.terminal.runSelectedText)
+#>
 
-# helper script for running terminal commands
-# to quickly execute some command: in vscode use "Terminal: Run Selected Text In Active Terminal" (command id is @command:workbench.action.terminal.runSelectedText)
+return 0; # prevents executing this script as a whole
 
 Clear-Host
 git init

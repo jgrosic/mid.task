@@ -12,6 +12,8 @@ namespace AbySalto.Mid.Tests.Database;
 
 internal class RegistrationTests
 {
+
+    //TODO: use WebApplicationFactory (Microsoft.AspNetCore.Mvc.Testing)
     [Test]
     public async Task Registration_SavesUserAndRejectsDuplicate()
     {
