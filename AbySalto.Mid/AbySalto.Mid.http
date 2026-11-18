@@ -2,7 +2,7 @@
 @email = test@example.com
 @password = Password123!
 
-### 1. registration — expect 200 OK (first time)
+### 1.1. registration — expect 200 OK (first time)
 POST {{AbySalto.Mid_HostAddress}}/api/auth/register
 Content-Type: application/json
 Accept: application/json
@@ -12,11 +12,11 @@ Accept: application/json
   "password": "{{password}}"
 }
 
-### 1.1 user info before logging in — expect 401 unauthorized
+### 1.2 user info before logging in — expect 401 unauthorized
 GET {{AbySalto.Mid_HostAddress}}/api/auth/manage/info
 Accept: application/json
 
-### 2. log in using cookie auth — expect 200 and Set-Cookie in headers
+### 1.3 log in using cookie auth — expect 200 and Set-Cookie in headers
 POST {{AbySalto.Mid_HostAddress}}/api/auth/login?useCookies=true
 Content-Type: application/json
 Accept: application/json
@@ -25,12 +25,12 @@ Accept: application/json
   "password": "{{password}}"
 }
 
-### 3. current user info — expect 200 with email (Visual Studio uses it's cookie jar)
+### 1.4. current user info — expect 200 with email (Visual Studio uses it's cookie jar)
 GET {{AbySalto.Mid_HostAddress}}/api/auth/manage/info
 Accept: application/json
 # Cookie: {{authCookie}}
 
-### 4. incorrect password — expect 401
+### 1.5. incorrect password — expect 401
 POST {{AbySalto.Mid_HostAddress}}/api/auth/login?useCookies=true
 Content-Type: application/json
 Accept: application/json
@@ -39,3 +39,24 @@ Accept: application/json
   "email": "{{email}}",
   "password": "WrongPassword123!"
 }
+
+
+### 2.1 get all products - expect 200 with products
+GET {{AbySalto.Mid_HostAddress}}/api/products
+Accept: application/json
+
+### 2.2 get existing product - expect 200 with product
+GET {{AbySalto.Mid_HostAddress}}/api/products/42
+Accept: application/json
+
+### 2.3 get non-existing product - expect 404
+GET {{AbySalto.Mid_HostAddress}}/api/products/123456789
+Accept: application/json
+
+### 2.4 get product with 0 id  - expect 400 bad request
+GET {{AbySalto.Mid_HostAddress}}/api/products/0
+Accept: application/json
+
+### 2.5 get product with negative id  - expect 400 bad request
+GET {{AbySalto.Mid_HostAddress}}/api/products/-5
+Accept: application/json

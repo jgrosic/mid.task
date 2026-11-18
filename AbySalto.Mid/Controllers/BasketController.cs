@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace AbySalto.Mid.Controllers
+namespace AbySalto.Mid.Controllers;
+
+public sealed class BasketController : ControllerBase
 {
-    public class BasketController : Controller
-    {
-    }
 }

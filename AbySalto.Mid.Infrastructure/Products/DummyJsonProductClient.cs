@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using AbySalto.Mid.Application.Products;
+using AbySalto.Mid.Infrastructure.Exceptions;
 
 namespace AbySalto.Mid.Infrastructure.Products;
 
@@ -13,15 +14,26 @@ public sealed class DummyJsonProductClient(HttpClient httpClient) : IProductCata
     public async Task<IReadOnlyList<ProductDto>> GetProductsAsync(
         CancellationToken cancellationToken)
     {
-        // Without limit=0 DummyJSON returns only the default page, not the full catalog.
-        using var response = await httpClient.GetAsync("products?limit=0", cancellationToken);
-        response.EnsureSuccessStatusCode();
+        try
+        {
+            // Without limit=0 DummyJSON returns only the default page, not the full catalog.
+            using var response = await httpClient.GetAsync("products?limit=0", cancellationToken);
+            response.EnsureSuccessStatusCode();
 
-        var result = await response.Content.ReadFromJsonAsync<ProductsResponse>(
-            cancellationToken: cancellationToken);
+            var result = await response.Content.ReadFromJsonAsync<ProductsResponse>(
+                cancellationToken: cancellationToken);
 
-        return result?.Products
-               ?? throw new JsonException("DummyJSON returned an invalid product list.");
+            return result?.Products
+                   ?? throw new JsonException("DummyJSON returned an invalid product list.");
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new ExternalServiceException("DummyJSON request failed.", ex);
+        }
+        catch (JsonException ex)
+        {
+            throw new ExternalServiceException("DummyJSON returned an invalid response.", ex);
+        }
     }
 
     public async Task<ProductDto?> GetProductAsync(
@@ -29,18 +41,29 @@ public sealed class DummyJsonProductClient(HttpClient httpClient) : IProductCata
         CancellationToken cancellationToken)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(productId);
+        try
+        {
 
-        using var response = await httpClient.GetAsync($"products/{productId}", cancellationToken);
+            using var response = await httpClient.GetAsync($"products/{productId}", cancellationToken);
 
-        if (response.StatusCode is HttpStatusCode.NotFound)
-            return null;
+            if (response.StatusCode is HttpStatusCode.NotFound)
+                return null;
 
-        response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
-        var product = await response.Content.ReadFromJsonAsync<ProductDto>(
-            cancellationToken: cancellationToken);
+            var product = await response.Content.ReadFromJsonAsync<ProductDto>(
+                cancellationToken: cancellationToken);
 
-        return product
-               ?? throw new JsonException("DummyJSON returned an invalid product.");
+            return product
+                   ?? throw new JsonException("DummyJSON returned an invalid product.");
+        }
+        catch (HttpRequestException ex)
+        {
+            throw new ExternalServiceException("DummyJSON request failed.", ex);
+        }
+        catch (JsonException ex)
+        {
+            throw new ExternalServiceException("DummyJSON returned an invalid response.", ex);
+        }
     }
 }

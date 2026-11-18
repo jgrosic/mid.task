@@ -1,4 +1,3 @@
-
 using AbySalto.Mid.Application;
 using AbySalto.Mid.Infrastructure;
 using AbySalto.Mid.Infrastructure.Identity;
@@ -28,6 +27,11 @@ namespace AbySalto.Mid
                     options.RoutePrefix = string.Empty;
                 });
             }
+            else
+            {
+            }
+
+            app.UseExceptionHandler();
 
             app.UseHttpsRedirection();
 
@@ -35,7 +39,7 @@ namespace AbySalto.Mid
             app.UseAuthorization();
 
             app.MapControllers();
-            
+
             app.MapGroup("/api/auth")
                 .MapIdentityApi<ApplicationUser>();
 

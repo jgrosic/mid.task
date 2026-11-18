@@ -1,10 +1,7 @@
-﻿using AbySalto.Mid.Application.Auth;
-using AbySalto.Mid.Application.Products;
+﻿using AbySalto.Mid.Application.Products;
 using AbySalto.Mid.Infrastructure.Identity;
 using AbySalto.Mid.Infrastructure.Persistence;
 using AbySalto.Mid.Infrastructure.Products;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +21,7 @@ namespace AbySalto.Mid.Infrastructure
 
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
+            // obsolete: switched to using AddIdentityApiEndpoints<ApplicationUser>
             //services.AddScoped<IAuthService, IdentityAuthService>();
 
             services.AddHttpClient<IProductCatalog, DummyJsonProductClient>(client =>

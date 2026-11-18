@@ -2,6 +2,7 @@
 using AbySalto.Mid.Infrastructure;
 using AbySalto.Mid.Infrastructure.Identity;
 using AbySalto.Mid.Infrastructure.Persistence;
+using AbySalto.Mid.Tests.Api;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,9 +13,12 @@ namespace AbySalto.Mid.Tests.Database;
 
 internal class RegistrationTests
 {
-
+    /// <summary>
+    /// See <see cref="AuthTests"/>
+    /// </summary>
+    /// <returns></returns>
     [Test]
-    [Skip("Registration tests are now in AuthTests")]
+    [Skip("Obsolete. See: AuthTests")]
     public async Task Registration_SavesUserAndRejectsDuplicate()
     {
         // arrange

@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using AbySalto.Mid.WebApi.Exceptions;
+using Microsoft.OpenApi.Models;
 
 namespace AbySalto.Mid
 {
@@ -13,6 +14,9 @@ namespace AbySalto.Mid
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AbySalto", Version = "v1" });
             });
+
+            services.AddProblemDetails();
+            services.AddExceptionHandler<ExternalServiceExceptionHandler>();
 
             return services;
         }
