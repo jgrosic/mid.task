@@ -1,6 +1,8 @@
 ﻿using AbySalto.Mid.Application.Auth;
+using AbySalto.Mid.Application.Products;
 using AbySalto.Mid.Infrastructure.Identity;
 using AbySalto.Mid.Infrastructure.Persistence;
+using AbySalto.Mid.Infrastructure.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +24,15 @@ namespace AbySalto.Mid.Infrastructure
 
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
-            return services.AddScoped<IAuthService, IdentityAuthService>();
+            //services.AddScoped<IAuthService, IdentityAuthService>();
+
+            services.AddHttpClient<IProductCatalog, DummyJsonProductClient>(client =>
+            {
+                client.BaseAddress = new Uri("https://dummyjson.com/");
+                client.Timeout = TimeSpan.FromSeconds(10);
+            });
+
+            return services;
         }
 
         private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)

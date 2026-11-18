@@ -1,6 +1,6 @@
 # Abysalto .net mid task
 
-see: helper.ps1 for helpful commands
+[See: helper.ps1 PowerShell script](helper.ps1) for helpful commands
 
 Project dependencies, arrow meaning "project is referencing another project"
 - Application     -> Domain
@@ -11,7 +11,7 @@ Projects
 AbySalto.Mid.Domain
 AbySalto.Mid.Application
 AbySalto.Mid.Infrastructure
-AbySalto.Mid — Web API
+AbySalto.Mid — Web API - composition root
 
 
 ## Setup
@@ -27,11 +27,16 @@ Run from the repository root:
 ```powershell
 dotnet restore
 dotnet tool restore
+
 dotnet ef database update --project AbySalto.Mid.Infrastructure --startup-project AbySalto.Mid -- --environment Development
+
 dotnet run --project AbySalto.Mid --launch-profile http
+dotnet run --project AbySalto.Mid --launch-profile https
 ```
 
-Swagger: http://localhost:5269/
+Swagger: 
+http://localhost:5269/
+https://localhost:7221/
 
 ## Tests
 
@@ -43,7 +48,11 @@ TUnit with Microsoft Testing Platform. Run: `dotnet test`.
 
 ## Implemented
 
-User registration via `POST /api/auth/register`, using ASP.NET Core Identity for validation, password hashing, and persistence.
+Using ASP.NET Core Identity.
+
+User registration `POST /api/auth/register`
+Log in `/api/auth/login`
+User info `/api/auth/manage/info`
 
 
 # Tips
