@@ -1,7 +1,8 @@
 @AbySalto.Mid_HostAddress = https://localhost:7221
-@email = test@example.com
+@email = test2@example.com
 @password = Password123!
 
+###-----------------------------------------------
 ### 1.1. registration — expect 200 OK (first time)
 POST {{AbySalto.Mid_HostAddress}}/api/auth/register
 Content-Type: application/json
@@ -41,6 +42,7 @@ Accept: application/json
 }
 
 
+###-----------------------------------------------
 ### 2.1 get all products - expect 200 with products
 GET {{AbySalto.Mid_HostAddress}}/api/products
 Accept: application/json
@@ -59,4 +61,18 @@ Accept: application/json
 
 ### 2.5 get product with negative id  - expect 400 bad request
 GET {{AbySalto.Mid_HostAddress}}/api/products/-5
+Accept: application/json
+
+###-----------------------------------------------
+
+### Add favorite — expect 204 no content; repeating the request also returns 204
+POST {{AbySalto.Mid_HostAddress}}/api/products/42/favorite
+Accept: application/json
+
+### Add missing product — expect 404
+POST {{AbySalto.Mid_HostAddress}}/api/products/123456789/favorite
+Accept: application/json
+
+### Add favorite with invalid ID — expect 400
+POST {{AbySalto.Mid_HostAddress}}/api/products/0/favorite
 Accept: application/json

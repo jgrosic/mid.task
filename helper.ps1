@@ -61,8 +61,14 @@ dotnet ef --help
 dotnet ef migrations --help
 dotnet ef migrations add --help
 
-# add migration
-dotnet ef migrations add InitialCreate  --project AbySalto.Mid.Infrastructure --startup-project AbySalto.Mid
+# ----------------------
+# add migrations
+dotnet ef migrations add InitialCreate  --project AbySalto.Mid.Infrastructure --startup-project AbySalto.Mid -- --environment Development
+dotnet ef migrations add AddFavorites   --project AbySalto.Mid.Infrastructure --startup-project AbySalto.Mid -- --environment Development
+
+dotnet ef database update --project AbySalto.Mid.Infrastructure --startup-project AbySalto.Mid               -- --environment Development
+# ----------------------
+
 
 # remove migration
 dotnet ef migrations remove             --project AbySalto.Mid.Infrastructure --startup-project AbySalto.Mid
@@ -89,6 +95,7 @@ dotnet tool install dotnet-ef --version 9.0.23
 # EF Database update
 # -----------------------------------------------
 dotnet ef database --help
+dotnet ef database update --help
 
 dotnet ef database drop     --project AbySalto.Mid.Infrastructure --startup-project AbySalto.Mid -- --environment Development
 

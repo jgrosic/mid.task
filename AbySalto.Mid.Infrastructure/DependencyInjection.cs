@@ -1,4 +1,6 @@
-﻿using AbySalto.Mid.Application.Products;
+﻿using AbySalto.Mid.Application.Favorites;
+using AbySalto.Mid.Application.Products;
+using AbySalto.Mid.Infrastructure.Favorites;
 using AbySalto.Mid.Infrastructure.Identity;
 using AbySalto.Mid.Infrastructure.Persistence;
 using AbySalto.Mid.Infrastructure.Products;
@@ -29,6 +31,8 @@ namespace AbySalto.Mid.Infrastructure
                 client.BaseAddress = new Uri("https://dummyjson.com/");
                 client.Timeout = TimeSpan.FromSeconds(10);
             });
+
+            services.AddScoped<IFavoriteService, FavoritesService>();
 
             return services;
         }

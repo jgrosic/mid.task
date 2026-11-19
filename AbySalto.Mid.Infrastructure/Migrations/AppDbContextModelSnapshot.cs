@@ -70,6 +70,26 @@ namespace AbySalto.Mid.Infrastructure.Migrations
                     b.ToTable("BasketItem");
                 });
 
+            modelBuilder.Entity("AbySalto.Mid.Domain.Entities.Favorite", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "ProductId")
+                        .IsUnique()
+                        .HasDatabaseName("UQ_Favorite_UserId_ProductId");
+
+                    b.ToTable("Favorite");
+                });
+
             modelBuilder.Entity("AbySalto.Mid.Infrastructure.Identity.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -281,6 +301,15 @@ namespace AbySalto.Mid.Infrastructure.Migrations
                     b.HasOne("AbySalto.Mid.Domain.Entities.Basket", null)
                         .WithMany("Items")
                         .HasForeignKey("BasketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AbySalto.Mid.Domain.Entities.Favorite", b =>
+                {
+                    b.HasOne("AbySalto.Mid.Infrastructure.Identity.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

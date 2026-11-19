@@ -9,6 +9,10 @@ namespace AbySalto.Mid.Infrastructure.Persistence;
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
     : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>(options)
 {
+    public DbSet<Basket> Basket => Set<Basket>();
+    public DbSet<BasketItem> BasketItem => Set<BasketItem>();
+    public DbSet<Favorite> Favorite => Set<Favorite>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -53,7 +57,8 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
             {
                 item.BasketId,
                 item.ProductId
-            }).IsUnique()
+            })
+            .IsUnique()
             .HasDatabaseName("UQ_BasketItem_BasketId_ProductId");
 
             entity.Property(item => item.ProductTitle)
@@ -62,6 +67,28 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
 
             entity.Property(item => item.UnitPrice)
                 .HasPrecision(18, 2);
+        });
+
+        // ----------------------------------------------------------------------------------------
+        builder.Entity<Favorite>(entity =>
+        {
+            entity.HasKey(item => item.Id);
+
+            entity.Property(item => item.Id)
+                .ValueGeneratedNever();
+
+            entity.HasIndex(item => new
+            {
+                item.UserId,
+                item.ProductId
+            })
+            .IsUnique()
+            .HasDatabaseName("UQ_Favorite_UserId_ProductId");
+
+            entity.HasOne<ApplicationUser>()
+            .WithMany()
+            .HasForeignKey(favorite => favorite.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

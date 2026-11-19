@@ -12,7 +12,7 @@ Swagger: https://localhost:7221/
 
 Alternatively, use the `http` launch profile: http://localhost:5269/.
 
-Use [AbySalto.Mid.http](AbySalto.Mid/AbySalto.Mid.http) to quickly check registration, login, and current user information.
+Use [AbySalto.Mid.http](AbySalto.Mid/AbySalto.Mid.http) to quickly check authentication, products, and favorites.
 
 ### Authentication
 
@@ -35,6 +35,53 @@ Registration does not log the user in. The info endpoint requires the authentica
 
 Visual Studio's `.http` client keeps its own cookie jar. Use a separate client without cookies when checking unauthenticated requests.
 
+### Products
+
+Product GET endpoints are public and do not require authentication. Products are fetched from DummyJSON and are not stored locally.
+
+- [x] Get all products: `GET /api/products`.
+- [x] Get an individual product: `GET /api/products/{id}`.
+
+Responses:
+
+- `200 OK`: product list or individual product.
+- `400 Bad Request`: product ID is zero or negative.
+- `404 Not Found`: the product does not exist.
+- `502 Bad Gateway`: an upstream HTTP failure or invalid JSON response.
+
+Errors use ASP.NET Core ProblemDetails responses.
+
+Example:
+
+```http
+GET https://localhost:7221/api/products/42
+Accept: application/json
+```
+
+### Favorites
+
+- [x] Add a product to the current user's favorites: `POST /api/products/{id}/favorite`.
+
+Log in first using cookie authentication.
+
+Responses:
+
+- `204 No Content`: the favorite was added or already exists.
+- `400 Bad Request`: product ID is zero or negative.
+- `401 Unauthorized`: authentication is required.
+- `404 Not Found`: the product does not exist.
+- `502 Bad Gateway`: an upstream HTTP failure or invalid JSON response.
+
+Example, after login:
+
+```http
+POST https://localhost:7221/api/products/42/favorite
+Accept: application/json
+```
+
+Favorite listing and removal are not implemented.
+
+
 ### Feature status
 
 Unchecked items are not yet available through the application API.
@@ -42,8 +89,8 @@ Unchecked items are not yet available through the application API.
 - [x] User registration, login, and current user information.
 - [x] SQL Server persistence with EF Core migrations and Identity stores.
 - [x] DummyJSON client for fetching all products and individual products.
-- [ ] Product list and individual product API endpoints.
-- [ ] Add products to favorites.
+- [x] Product list and individual product API endpoints.
+- [x] Add products to favorites.
 - [x] Basket domain rules with unit tests.
 - [ ] Add products to the current user's basket through the API.
 - [ ] Remove products from the current user's basket through the API.
@@ -90,6 +137,7 @@ dotnet run --project AbySalto.Mid.Tests
 - [x] `Integration.Exploratory`: exploratory calls to the real DummyJSON API, marked `[Explicit]`.
 - [ ] Product client integration tests.
 - [ ] Product endpoint API tests.
+- [ ] Favorite persistence and API tests.
 
 Explicit tests only run when selected directly. For example:
 
