@@ -1,5 +1,7 @@
-﻿using AbySalto.Mid.Application.Favorites;
+﻿using AbySalto.Mid.Application.Baskets;
+using AbySalto.Mid.Application.Favorites;
 using AbySalto.Mid.Application.Products;
+using AbySalto.Mid.Infrastructure.Baskets;
 using AbySalto.Mid.Infrastructure.Favorites;
 using AbySalto.Mid.Infrastructure.Identity;
 using AbySalto.Mid.Infrastructure.Persistence;
@@ -33,6 +35,7 @@ namespace AbySalto.Mid.Infrastructure
             });
 
             services.AddScoped<IFavoriteService, FavoritesService>();
+            services.AddScoped<IBasketService, BasketService>();
 
             return services;
         }

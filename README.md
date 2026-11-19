@@ -12,7 +12,7 @@ Swagger: https://localhost:7221/
 
 Alternatively, use the `http` launch profile: http://localhost:5269/.
 
-Use [AbySalto.Mid.http](AbySalto.Mid/AbySalto.Mid.http) to quickly check authentication, products, and favorites.
+Use [AbySalto.Mid.http](AbySalto.Mid/AbySalto.Mid.http) to quickly check authentication, products, favorites, and the basket.
 
 ### Authentication
 
@@ -81,6 +81,46 @@ Accept: application/json
 
 Favorite listing and removal are not implemented.
 
+### Basket
+
+Log in first using cookie authentication. Each endpoint operates only on the current user's basket.
+
+- [x] Get the basket: `GET /api/basket`.
+- [x] Add a product: `POST /api/basket/items/{id}`.
+- [x] Remove a product: `DELETE /api/basket/items/{id}`.
+
+Example, after login:
+
+```http
+POST https://localhost:7221/api/basket/items/42
+Content-Type: application/json
+Accept: application/json
+
+{
+  "quantity": 2
+}
+```
+
+Basket rules:
+
+- The basket is stored in SQL Server and created on the first successful addition.
+- A user without a basket receives `200 OK` with `items: []` and `totalPrice: 0`.
+- Adding the same product again increases its quantity and retains its original title and unit price, without another DummyJSON request.
+- The request quantity and total quantity per product must be between 1 and 100.
+- Removing a product deletes the whole item, not just one unit. Removing a missing item also succeeds.
+- The response includes each item's product ID, title, unit price, quantity, and total price, plus the basket's total price.
+
+Responses:
+
+- `200 OK`: current basket.
+- `204 No Content`: product added or removed.
+- `400 Bad Request`: invalid product ID, missing/invalid quantity, or quantity limit exceeded.
+- `401 Unauthorized`: authentication is required.
+- `404 Not Found`: a product being added for the first time does not exist in DummyJSON.
+- `409 Conflict`: another request created the same basket or item; reload the basket before trying again.
+- `502 Bad Gateway`: an upstream HTTP failure or invalid JSON response while fetching a new product.
+
+Concurrency limitation: there is no optimistic concurrency control; simultaneous changes to an existing item may overwrite each other.
 
 ### Feature status
 
@@ -92,9 +132,9 @@ Unchecked items are not yet available through the application API.
 - [x] Product list and individual product API endpoints.
 - [x] Add products to favorites.
 - [x] Basket domain rules with unit tests.
-- [ ] Add products to the current user's basket through the API.
-- [ ] Remove products from the current user's basket through the API.
-- [ ] Get the current user's basket through the API.
+- [x] Add products to the current user's basket through the API.
+- [x] Remove products from the current user's basket through the API.
+- [x] Get the current user's basket through the API.
 - [ ] Product pagination and sorting (bonus).
 - [ ] Product caching (bonus).
 
@@ -133,11 +173,12 @@ dotnet run --project AbySalto.Mid.Tests
 
 - [x] `Unit`: isolated business-rule tests without a database or external services.
 - [x] `Database`: service tests using real SQL Server; the original registration test is now skipped in favor of API tests.
-- [x] `Api`: authentication endpoint tests using `WebApplicationFactory` and the test SQL Server database.
+- [x] `Api`: authentication and basket endpoint tests using `WebApplicationFactory` and the test SQL Server database. Basket tests replace DummyJSON with a test catalog.
 - [x] `Integration.Exploratory`: exploratory calls to the real DummyJSON API, marked `[Explicit]`.
 - [ ] Product client integration tests.
 - [ ] Product endpoint API tests.
 - [ ] Favorite persistence and API tests.
+- [x] Basket API tests, including persistence checks through HTTP requests (no direct database assertions).
 
 Explicit tests only run when selected directly. For example:
 

@@ -1,9 +1,11 @@
 ﻿using AbySalto.Mid.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace AbySalto.Mid.Tests.Api;
@@ -11,11 +13,13 @@ namespace AbySalto.Mid.Tests.Api;
 /// <summary>
 /// Hosts the API in-process using the configured SQL Server test database.
 /// Initializes the database once and allows clients to use isolated cookie jars.
+/// Optional service overrides are applied after application registrations, before the host starts.
 /// <para>
 /// See <see href="https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-9.0#basic-tests-with-the-default-webapplicationfactory">WebApplicationFactory documentation</see>.
 /// </para>
 /// </summary>
-internal sealed class ApiFactory : WebApplicationFactory<AbySalto.Mid.Program>
+internal sealed class ApiFactory(Action<IServiceCollection>? configureServices = null)
+    : WebApplicationFactory<AbySalto.Mid.Program>
 {
     public static Task InitializeDatabaseAsync() => DatabaseInitialization.Value;
 
@@ -55,6 +59,9 @@ internal sealed class ApiFactory : WebApplicationFactory<AbySalto.Mid.Program>
 
         builder.ConfigureAppConfiguration((_, configuration) =>
             configuration.AddConfiguration(TestConfiguration));
+
+        if (configureServices is not null)
+            builder.ConfigureTestServices(configureServices);
     }
 
     protected override IHost CreateHost(IHostBuilder builder)

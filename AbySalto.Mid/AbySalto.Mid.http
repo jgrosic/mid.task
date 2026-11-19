@@ -1,5 +1,5 @@
 @AbySalto.Mid_HostAddress = https://localhost:7221
-@email = test2@example.com
+@email = test@example.com
 @password = Password123!
 
 ###-----------------------------------------------
@@ -75,4 +75,62 @@ Accept: application/json
 
 ### Add favorite with invalid ID — expect 400
 POST {{AbySalto.Mid_HostAddress}}/api/products/0/favorite
+Accept: application/json
+
+###-----------------------------------------------
+
+### 3.1 Get current basket after login — expect 200, empty for a new user
+GET {{AbySalto.Mid_HostAddress}}/api/basket
+Accept: application/json
+
+### 3.2 Add two units — expect 204; repeating increases quantity by two
+POST {{AbySalto.Mid_HostAddress}}/api/basket/items/42
+Content-Type: application/json
+Accept: application/json
+
+{
+  "quantity": 2
+}
+
+### 3.3 Get basket — expect 200 with snapshot price, quantity, and totals
+GET {{AbySalto.Mid_HostAddress}}/api/basket
+Accept: application/json
+
+### 3.4 Invalid quantity — expect 400
+POST {{AbySalto.Mid_HostAddress}}/api/basket/items/42
+Content-Type: application/json
+Accept: application/json
+
+{
+  "quantity": 0
+}
+
+### 3.5 Exceed total quantity limit after adding two units — expect 400
+POST {{AbySalto.Mid_HostAddress}}/api/basket/items/42
+Content-Type: application/json
+Accept: application/json
+
+{
+  "quantity": 100
+}
+
+### 3.6 Missing product — expect 404
+POST {{AbySalto.Mid_HostAddress}}/api/basket/items/123456789
+Content-Type: application/json
+Accept: application/json
+
+{
+  "quantity": 1
+}
+
+### 3.7 Remove the whole item — expect 204; repeating is a successful no-op
+DELETE {{AbySalto.Mid_HostAddress}}/api/basket/items/42
+Accept: application/json
+
+### 3.8 Get basket after removal — expect 200 without product 42
+GET {{AbySalto.Mid_HostAddress}}/api/basket
+Accept: application/json
+
+### 3.9 Invalid product ID — expect 400
+DELETE {{AbySalto.Mid_HostAddress}}/api/basket/items/0
 Accept: application/json
