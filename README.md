@@ -171,6 +171,12 @@ Tests use TUnit with Microsoft Testing Platform:
 dotnet run --project AbySalto.Mid.Tests
 ```
 
+To see the test results:
+
+```powershell
+start .\TestResults\AbySalto.Mid.Tests-windows-net9.0-report.html
+```
+
 - [x] `Unit`: isolated business-rule tests without a database or external services.
 - [x] `Database`: service tests using real SQL Server; the original registration test is now skipped in favor of API tests.
 - [x] `Api`: authentication and basket endpoint tests using `WebApplicationFactory` and the test SQL Server database. Basket tests replace DummyJSON with a test catalog.
